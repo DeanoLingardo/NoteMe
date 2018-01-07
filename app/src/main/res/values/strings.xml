@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">NoteMe</string>
     <string name="note_title">note title</string>
-    <string name="note_title_hint">Type here... Eg. "Shopping list"</string>
-    <string name="note_title_label">Small description of the note</string>
+    <string name="note_title_hint">Eg. "Shopping list"</string>
+    <string name="note_title_label">Note Title</string>
     <string name="note_detail_label">the body of your note</string>
-    <string name="note_complete_button">save note?</string>
+    <string name="note_complete_button">Save</string>
     <string name="note_date">Note date</string>
+    <string name="note_delete_button">Delete</string>
+    <string name="new_note">New Note</string>
+    <string name="exit">Exit</string>
+    <string name="add_note">Add Note</string>
+    <string name="note_content_hint">Eggs, Milk, Cheese, Bread</string>
+    <string name="auto_save_content_description">Automatic saving is on</string>
 </resources>

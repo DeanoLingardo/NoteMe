@@ -26,22 +26,20 @@ public class NotepadModel {
     {
         mNotepadList = new ArrayList<>();
 
-        for (int i=0; i < 3; i++)
+        for (int i=0; i < 1; i++)
         {
             Notepad notepad = new Notepad();
-            notepad.setmTitle("Todo title " + i);
-            notepad.setmContent("Detail for task " + notepad.getmId().toString());
-            notepad.setmIsComplete(false);
-
+            notepad.setTitle("Test Note");
+            notepad.setContent("This is a tester note, enjoy :)");
             mNotepadList.add(notepad);
         }
     }
 
-    public Notepad getNotepad(UUID NotepadId)
+    public Notepad getNotepad(UUID noteId)
     {
         for (Notepad notepad : mNotepadList)
         {
-            if (notepad.getmId().equals(NotepadId))
+            if (notepad.getId().equals(noteId))
             {
                 return notepad;
             }
