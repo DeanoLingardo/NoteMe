@@ -8,15 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.util.UUID;
-
 public class NotepadActivity extends AppCompatActivity {
 
     public static final String EXTRA_NOTE_ID = "note_id";
     private static final String TAG = "NotepadActivity";
 
 
-    public static Intent newIntent(Context packageContext, UUID noteId) {
+    public static Intent newIntent(Context packageContext, int noteId) {
         Intent intent = new Intent(packageContext, NotepadActivity.class);
         intent.putExtra(EXTRA_NOTE_ID, noteId);
         return intent;
@@ -27,7 +25,7 @@ public class NotepadActivity extends AppCompatActivity {
     that receives a todoId and returns the fragment
      */
     protected Fragment createFragment(){
-        UUID noteId = (UUID) getIntent().getSerializableExtra(EXTRA_NOTE_ID);
+        int noteId = (int) getIntent().getSerializableExtra(EXTRA_NOTE_ID);
         return NotepadFragment.newInstance(noteId);
     }
 
@@ -52,6 +50,7 @@ public class NotepadActivity extends AppCompatActivity {
                     .commit();
         }
         Log.d(TAG, "onCreate: fragment added");
+
 
     }
 

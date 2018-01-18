@@ -7,9 +7,20 @@
     <string name="note_complete_button">Save</string>
     <string name="note_date">Note date</string>
     <string name="note_delete_button">Delete</string>
-    <string name="new_note">New Note</string>
+    <string name="new_note">New</string>
     <string name="exit">Exit</string>
     <string name="add_note">Add Note</string>
     <string name="note_content_hint">Eggs, Milk, Cheese, Bread</string>
     <string name="auto_save_content_description">Automatic saving is on</string>
+    <string name="todo_date">Date</string>
+    <string name="edit">Edit</string>
+    <string name="save_note">Save</string>
+    <string name="title_activity_notepad_navigation">Notepad_navigation</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="remove_all">Remove all</string>
+    <string name="remove_note">Delete</string>
 </resources>

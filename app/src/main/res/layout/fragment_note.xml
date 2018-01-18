@@ -38,6 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:text="@string/auto_save_content_description"
-        android:textColor="@color/kindaGrey" />
+        android:textColor="@color/NoteBody" />
 
 </LinearLayout>

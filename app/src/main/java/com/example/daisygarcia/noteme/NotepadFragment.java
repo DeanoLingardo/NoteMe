@@ -13,11 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.UUID;
+import java.util.List;
 
 public class NotepadFragment extends Fragment {
 
@@ -27,14 +26,14 @@ public class NotepadFragment extends Fragment {
     private Notepad mNote;
     public EditText mEditTextTitle;
     public EditText mEditContent;
-    private Button mButtonSave;
-    private Button mButtonDelete;
+    private DatabaseHandler db;
+
 
     /*
     Rather than the calling the constructor directly, Activity(s) should call newInstance
     and pass required parameters that the fragment needs to create its arguments.
      */
-    public static NotepadFragment newInstance(UUID noteId)
+    public static NotepadFragment newInstance(int noteId)
     {
         Bundle args = new Bundle();
         args.putSerializable(ARG_NOTE_ID, noteId);
@@ -47,10 +46,11 @@ public class NotepadFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UUID noteId = (UUID) getActivity()
+        int noteId = (int) getActivity()
                 .getIntent().getSerializableExtra(NotepadActivity.EXTRA_NOTE_ID);
         mNote = NotepadModel.get(getActivity()).getNotepad(noteId);
         setHasOptionsMenu(true);
+        db = new DatabaseHandler(getActivity());
     }
 
     @Nullable
@@ -63,6 +63,7 @@ public class NotepadFragment extends Fragment {
 
 //NOTE TITLE
         mEditTextTitle = view.findViewById(R.id.note_title);
+        mEditTextTitle.setEnabled(false);
         mEditTextTitle.setText(mNote.getTitle());
         mEditTextTitle.addTextChangedListener(new TextWatcher()
         {
@@ -87,6 +88,7 @@ public class NotepadFragment extends Fragment {
 
 //NOTE CONTENT
         mEditContent = view.findViewById(R.id.note_body);
+        mEditContent.setEnabled(false);
         mEditContent.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -109,24 +111,51 @@ public class NotepadFragment extends Fragment {
         });
 
         mEditContent.setText(mNote.getContent());
-
         return view;
 
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_note, menu);
     }
 
+    public void showTableInLogger()
+    {
+        // Reading all contacts
+        Log.d("Reading: ", "Reading all notes..");
+        List<Notepad> notes2 = db.getAllNotes();
+
+        //Print out table in logger
+        for (Notepad cn : notes2)
+        {
+            String log = "Id: " + cn.getId() + " ,Title: " + cn.getTitle() + " ,content: " + cn.getContent();
+            // Writing Notes to log
+            Log.d("Name: ", log);
+        }
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            //Delete note button
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+//Delete note button
             case R.id.remove_note:
 
-                NotepadModel.get(getActivity()).removeNote(mNote);
+                //Old remove method
+               NotepadModel.get(getActivity()).removeNote(mNote);
+
+
+                //TODO Find how to pass value of note ID to deleteNote method
+               // db.deleteNote(notes.get(0));
+
+                db.getAllNotes();
+
+                showTableInLogger();
+
                 Intent intent = new Intent(getActivity(), NotepadListActivity.class);
                 startActivity(intent);
 
@@ -138,19 +167,33 @@ public class NotepadFragment extends Fragment {
 
                 return true;
 
-            //Save note button
+//Save note button with CRUD Operations
             case R.id.save_note:
+
+                //Inserting note
+                db.addNotepad(new Notepad(mNote.getTitle(),mNote.getContent()));
+
+               showTableInLogger();
+
+                //Simple toast
                 Toast.makeText(
                         getActivity(),
                         mNote.getTitle() + " Saved",
                         Toast.LENGTH_SHORT)
                         .show();
 
+                //Return to list
                 Intent i = new Intent(getActivity(), NotepadListActivity.class);
                 startActivity(i);
+
+//Edit button TODO change to toggle button
+            case R.id.edit_note:
+                    mEditContent.setEnabled(true);
+                    mEditTextTitle.setEnabled(true);
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

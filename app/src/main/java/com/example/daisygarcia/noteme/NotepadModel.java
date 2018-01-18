@@ -1,8 +1,8 @@
 package com.example.daisygarcia.noteme;
 
 import android.content.Context;
+
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by Daisy Garcia on 03/01/2018.
@@ -12,6 +12,10 @@ public class NotepadModel {
 
     private static NotepadModel sNotepadModel;
     private ArrayList<Notepad> mNotepadList;
+    private DatabaseHandler db;
+   // private List<Notepad> mNotepadList = db.getAllNotes();
+
+
 
     public static NotepadModel get(Context context)
     {
@@ -26,20 +30,21 @@ public class NotepadModel {
     {
         mNotepadList = new ArrayList<>();
 
-        for (int i=0; i < 1; i++)
+      /*  for (int i=0; i < 1; i++)
         {
-            Notepad notepad = new Notepad();
-            notepad.setTitle("Test Note");
-            notepad.setContent("This is a tester note, enjoy :)");
-            mNotepadList.add(notepad);
+           Notepad notepad = new Notepad();
+           notepad.setTitle("Test Note");
+           notepad.setContent("This is a tester note, enjoy :)");
+           mNotepadList.add(notepad);
         }
+        */
     }
 
-    public Notepad getNotepad(UUID noteId)
+    public Notepad getNotepad(int noteId)
     {
         for (Notepad notepad : mNotepadList)
         {
-            if (notepad.getId().equals(noteId))
+            if (notepad.getId()==(noteId))
             {
                 return notepad;
             }

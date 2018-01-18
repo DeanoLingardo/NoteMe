@@ -7,8 +7,10 @@ package com.example.daisygarcia.noteme;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import java.util.List;
 public class NotepadListFragment extends Fragment {
 
     private RecyclerView mNotepadRecyclerView;
+    private DatabaseHandler db;
     NotepadAdapter mNotepadAdapter;
 
     @Override
@@ -39,16 +42,19 @@ public class NotepadListFragment extends Fragment {
 
         mNotepadRecyclerView = (RecyclerView) view.findViewById(R.id.note_recycler_view);
         mNotepadRecyclerView.setLayoutManager( new LinearLayoutManager(getActivity()) );
-
+        mNotepadRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //DB
+        db = new DatabaseHandler(getActivity());
         updateUI();
 
         return view;
-
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.new_note:
 
                 Notepad note = new Notepad();
@@ -59,8 +65,20 @@ public class NotepadListFragment extends Fragment {
 
                 return true;
 
-            case R.id.exit_app:
-                System.exit(0);
+            case R.id.remove_all:
+
+                db.deleteAll();
+
+                // Reading all contacts
+                Log.d("Reading: ", "Reading all notes..");
+                List<Notepad> notes = db.getAllNotes();
+                //Print out table in logger
+                for (Notepad cn : notes) {
+                    String log = "Id: " + cn.getId() + " ,Title: " + cn.getTitle() + " ,content: " + cn.getContent();
+                    // Writing Notes to log
+                    Log.d("Name: ", log);
+                }
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -102,6 +120,9 @@ public class NotepadListFragment extends Fragment {
     {
         private Notepad mNote;
         private TextView mTextViewTitle;
+        private TextView mTextViewDate;
+
+
 
         public NotepadHolder(LayoutInflater inflater, ViewGroup parent)
         {
@@ -110,6 +131,7 @@ public class NotepadListFragment extends Fragment {
             itemView.setOnClickListener(this);
 
             mTextViewTitle = itemView.findViewById(R.id.note_title);
+            mTextViewDate =  itemView.findViewById(R.id.note_date);
         }
 
         @Override
@@ -123,6 +145,7 @@ public class NotepadListFragment extends Fragment {
         {
             mNote = note;
             mTextViewTitle.setText(mNote.getTitle());
+            mTextViewDate.setText(mNote.getDate().toString());
         }
 
     }
@@ -136,14 +159,15 @@ public class NotepadListFragment extends Fragment {
         }
 
         @Override
-        public NotepadListFragment.NotepadHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public NotepadListFragment.NotepadHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-
             return new NotepadHolder(layoutInflater, parent);
         }
 
         @Override
-        public void onBindViewHolder(NotepadHolder holder, int position) {
+        public void onBindViewHolder(NotepadHolder holder, int position)
+        {
             Notepad note = mNotes.get(position);
             holder.bind(note);
         }

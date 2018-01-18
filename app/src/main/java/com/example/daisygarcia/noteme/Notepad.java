@@ -1,20 +1,26 @@
 package com.example.daisygarcia.noteme;
 
-import java.util.UUID;
+import java.util.Date;
 
 /**
  * Created by Daisy Garcia on 03/01/2018.
  */
 
-public class Notepad
-{
-    private UUID mId;
+public class Notepad {
+    private int mId;
     private String mTitle;
     private String mContent;
+    private Date mDate;
 
-    public Notepad()
-    {
-        mId = UUID.randomUUID();
+
+    public Notepad() {
+        mId = (int)(Math.random()*100);
+        mDate = new Date();
+    }
+
+    public Notepad(String mTitle, String mContent){
+        this.mTitle = mTitle;
+        this.mContent = mContent;
     }
 
     public void setTitle(String mTitle) {
@@ -33,11 +39,19 @@ public class Notepad
         this.mContent = mContent;
     }
 
-    public void setId(UUID mId) {
+    public void setId(int mId) {
         this.mId = mId;
     }
 
-    public UUID getId() {
+    public int getId() {
         return mId;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date mDate) {
+        this.mDate = mDate;
     }
 }
